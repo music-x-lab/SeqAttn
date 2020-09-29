@@ -1,4 +1,4 @@
-# Sequence Attention
+# Sequential Attention (SeqAttn)
 
 The official repo for the paper **Discovering Music Relations with Sequential Attention**.
 
