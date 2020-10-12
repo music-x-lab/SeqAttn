@@ -2,6 +2,10 @@
 
 The official repo for the paper **Discovering Music Relations with Sequential Attention**.
 
+## Blog Post & Demos
+
+https://music-x-lab.github.io/SeqAttn/
+
 ## Pre-trained Models
 
 You can get all the pre-trained models in the paper here:
