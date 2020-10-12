@@ -76,27 +76,27 @@
 	<h4> 2. Module Architecture </h4>
 	<p>To perform sequence-wise similarity calculation, we first stack the key and query sequence together, and then feed them into a uni-directional Long Short-Term Memory (LSTM) layer. The output of the LSTM and the corresponding key token will be used to determine the matching score of the two sequences, and a predicted token for the next token of the query string. </p>
 	<figure class="figure text-center">
-	  <img src="img/architecture.png" class="figure-img img-fluid" style="width: 100%; max-width: 600px;">
+	  <img src="img/Architecture.png" class="figure-img img-fluid" style="width: 100%; max-width: 600px;">
 	  <figcaption class="figure-caption">Fig. 1. The module architecture.</figcaption>
 	</figure>
 	
 	<p>Fig. 1 provides an illustrative scenario where we have two sequences of notes (Fig. 1). The first sequence is <code>C4 D4 E4 C4 G4</code>, and the second is <code>A3 B3 C4 A3 ?</code> where the question mark denotes an unknown token we want to predict. Notice that these two strings are likely to form a <b>tonal sequence</b> relation, and we can use this information to predict the unknown token is likely to be <code>E4</code>. If the module is well-trained, it will discover similar relations and use them to improve the prediction accuracy.</p>
 	
 	<figure class="figure text-center">
-	  <img src="img/overview.png" class="figure-img img-fluid" style="width: 100%; max-width: 500px;">
+	  <img src="img/Overview.png" class="figure-img img-fluid" style="width: 100%; max-width: 500px;">
 	  <figcaption class="figure-caption">Fig. 2. Self-attentive layer using sequential attention modules.</figcaption>
 	</figure>
 	<p>We can use this module in an attentive language model (Fig. 2). To predict the next token of a partial sequence, we can regard its suffix as the query string, and its substrings as the key strings. Notice that some key strings are not well-matched with the query string, providing useless information for prediction. The normalized matching score is used as the attention weights since a higher score indicates a more important relation between the key and query sequences. We aggregate the prediction by a weighted average layer to produce the final prediction for the next token.</p>
 
 	<figure class="figure text-center">
-	  <img src="img/conditional.png" class="figure-img img-fluid" style="width: 100%; max-width: 500px;">
+	  <img src="img/Conditional.png" class="figure-img img-fluid" style="width: 100%; max-width: 500px;">
 	  <figcaption class="figure-caption">Fig. 3. A conditional version of the sequential attention module.</figcaption>
 	</figure>
 	<p>For the task of conditional sequence generation (e.g., melody generation given chord sequences), we propose the conditional version of the sequential attention module (Fig. 3). In this module, the relations of the condition sequences are also considered. Since future conditions are also revealed, the module contains a backward LSTM to capture the relations of future conditions.</p>
 	
 	<h4> 3. Results </h4>
 	<figure class="figure text-center">
-	  <img src="img/results.png" class="figure-img img-fluid" style="width: 100%; max-width: 400px;">
+	  <img src="img/Results.png" class="figure-img img-fluid" style="width: 100%; max-width: 400px;">
 	  <figcaption class="figure-caption">Fig. 4. The comparative results for the accuracy and the perplexity of the next token prediction task on test sets.</figcaption>
 	</figure>
 	<p>We showed by experiments that the model outperforms a 3-layer transformer model with relative positional encoding in the next token prediction task. We also designed some case-study examples to show what kind of relations the module is able to capture. Notice that the top 2 predictions of case (2) both form valid tonal sequences (in C major and F major keys, respectively).</p>
@@ -108,7 +108,7 @@
 	Even though the model is not designed for music generation in mind, we tried some music generation experiments with the model. In Fig. 6, we use the conditional self-attentive language model to generate the melody given the chords and partial melody notes. 
 	
 	<figure class="figure text-center">
-	  <img src="img/generation.png" class="figure-img img-fluid" style="width: 100%; max-width: 800px;">
+	  <img src="img/Generation.png" class="figure-img img-fluid" style="width: 100%; max-width: 800px;">
 	  <figcaption class="figure-caption">Fig. 6. A generated sample. All chords and the melody for the first 8 bars are given. The model generates the melody for the next 8 bars. The repetitions in the generated piece are painted in colors (green and red).</figcaption>
 	</figure>
 	<h4> 4. More Generation Examples </h4>
