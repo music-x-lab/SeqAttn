@@ -25,13 +25,13 @@ def token_to_midilab(tokens,bpm=120,tokens_per_beat=4):
     return [[interval*x[0],interval*(x[1]+1)-1e-3,x[2]] for x in result]
 
 
-def triple_chroma_to_midilab(triple_chroma,bpm=120,tokens_per_beat=4,beat_per_bar=4):
+def triple_chroma_to_midilab(triple_chroma,bpm=120,tokens_per_beat=4,beat_per_bar=4,downbeat=None):
     last_chord_onset=-1
     last_chord_notes=[]
     result=[]
     for i in range(len(triple_chroma)+1):
-        if(i==len(triple_chroma) or i%(tokens_per_beat*beat_per_bar)==0 or
-                i==0 or not np.allclose(triple_chroma[i],triple_chroma[i-1])):
+        if(i==len(triple_chroma) or (beat_per_bar>0 and i%(tokens_per_beat*beat_per_bar)==0) or
+                i==0 or not np.allclose(triple_chroma[i],triple_chroma[i-1]) or (downbeat is not None and downbeat[i])):
             if(last_chord_onset>=0):
                 result+=[[last_chord_onset,i-1,note] for note in last_chord_notes]
                 last_chord_onset=-1

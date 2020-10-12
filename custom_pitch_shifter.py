@@ -51,3 +51,19 @@ class CustomChordPitchShifter(AbstractPitchShifter):
             elif(len(result)>self.fixed_length):
                 result=result[:self.fixed_length]
         return result
+
+
+class BeatInformation(AbstractPitchShifter):
+
+    def __init__(self,fixed_length=-1):
+        self.fixed_length=fixed_length
+
+    def pitch_shift(self,data,shift):
+        result=data[:,15:].copy()
+        if(self.fixed_length!=-1):
+            if(len(result)<self.fixed_length):
+                result=np.concatenate((result,np.zeros((self.fixed_length-len(result),result.shape[1]),dtype=result.dtype)),
+                                     axis=0)
+            elif(len(result)>self.fixed_length):
+                result=result[:self.fixed_length]
+        return result

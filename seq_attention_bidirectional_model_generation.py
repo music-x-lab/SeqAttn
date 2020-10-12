@@ -4,8 +4,8 @@ from seq_attention_bidirectional_model import NetworkInterface,CustomPitchShifte
     FramedDataProvider,N_MIDI_PITCH
 import matplotlib.pyplot as plt
 from array_to_midi import triple_chroma_to_midilab
+from extractors.midilab_exporter import export_midi
 from evaluation_metrics import get_dataset_split
-from midi_helper import export_midi
 import sys
 
 def token_to_midilab(tokens,bpm=120,tokens_per_beat=4):
@@ -53,8 +53,8 @@ def plot_weight(net,tokens,condition):
     ax[2].invert_yaxis()
     plt.show()
 
-def conditional_generation(net,tokens,condition,id,temperature=np.inf):
-    midilab_chord=triple_chroma_to_midilab(condition)
+def conditional_generation(net,tokens,condition,beat,id,temperature=np.inf):
+    midilab_chord=triple_chroma_to_midilab(condition,beat_per_bar=0,downbeat=beat[:,1])
     seg_count=16
     for i in [16,8,1,0]:
         print('Generating id=%d, i=%d, temperature=%f'%(id,i,temperature))
@@ -82,8 +82,8 @@ if __name__ == '__main__':
     net=NetworkInterface(ConditionalSequentialAttentionPredictor(
         n_vocabulary=N_MIDI_PITCH+2,emb_size=256,cond_size=128,
         input_cond_shape=36,hidden_dim=256,n_head=4,n_rel_pos=32,tokens_per_bar=tokens_per_bar,dropout=0.5),
-        'cond_seq_attn_%s_align_%d_v3.0_dropout_early_stopping'%(dataset_name,tokens_per_bar),load_checkpoint=False)
-    test_provider=get_dataset_split(dataset_name,'test',True,256)
+        'cond_seq_attn_%s_align_%d_v3.0_dropout_early_stopping.best'%(dataset_name,tokens_per_bar),load_checkpoint=False)
+    test_provider=get_dataset_split(dataset_name,'test',True,256,use_beat=True)
     for i in range(test_provider.get_length()):
         conditional_generation(net,*test_provider.get_sample(i),i,temperature=temperature)
         # plot_weight(net,*val_provider.get_sample(i),i)

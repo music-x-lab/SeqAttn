@@ -1,12 +1,12 @@
 import numpy as np
 from mir.nn.data_storage import FramedRAMDataStorage
 from mir.nn.data_provider import FramedDataProvider
-from custom_pitch_shifter import CustomChordPitchShifter,CustomPitchShifter
+from custom_pitch_shifter import CustomChordPitchShifter,CustomPitchShifter,BeatInformation
 
 MAX_TEST_LENGTH=1024
 
 
-def get_dataset_split(dataset_name,split,use_cond,fix_length=-1,verbose=1):
+def get_dataset_split(dataset_name,split,use_cond,fix_length=-1,use_beat=False,verbose=1):
     import os
     storage_x=FramedRAMDataStorage(os.path.join(os.getcwd(),'data/%s_note_chords'%dataset_name))
     storage_x.load()
@@ -20,6 +20,9 @@ def get_dataset_split(dataset_name,split,use_cond,fix_length=-1,verbose=1):
     test_provider.link(storage_x,CustomPitchShifter(fixed_length=fix_length),subrange=test_indices)
     if(use_cond):
         test_provider.link(storage_x,CustomChordPitchShifter(fixed_length=fix_length),subrange=test_indices)
+
+    if(use_beat):
+        test_provider.link(storage_x,BeatInformation(fixed_length=fix_length),subrange=test_indices)
 
     return test_provider
 
