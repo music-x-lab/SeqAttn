@@ -16,7 +16,7 @@ After downloading, put the ".sdict" files in the "cache_data" folder.
 
 ## Running Training
 
-We have included the processed nottingham dataset in the data folder. If you need the chpop dataset, please contact us.
+We have included the processed nottingham dataset and chpop dataset in the data folder. Please uncompress the data.zip file to the data folder first.
 
 You can re-train the models with the following example code:
 

@@ -31,7 +31,7 @@ def triple_chroma_to_midilab(triple_chroma,bpm=120,tokens_per_beat=4,beat_per_ba
     result=[]
     for i in range(len(triple_chroma)+1):
         if(i==len(triple_chroma) or (beat_per_bar>0 and i%(tokens_per_beat*beat_per_bar)==0) or
-                i==0 or not np.allclose(triple_chroma[i],triple_chroma[i-1]) or (downbeat is not None and downbeat[i])):
+                i==0 or not np.allclose(triple_chroma[i],triple_chroma[i-1]) or (downbeat is not None and downbeat[i] and not downbeat[i-1])):
             if(last_chord_onset>=0):
                 result+=[[last_chord_onset,i-1,note] for note in last_chord_notes]
                 last_chord_onset=-1
