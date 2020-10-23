@@ -4,7 +4,7 @@ from seq_attention_bidirectional_model import NetworkInterface,CustomPitchShifte
     FramedDataProvider,N_MIDI_PITCH
 import matplotlib.pyplot as plt
 from array_to_midi import triple_chroma_to_midilab
-from extractors.midilab_exporter import export_midi
+from midi_helper import export_midi
 from evaluation_metrics import get_dataset_split
 import sys
 
