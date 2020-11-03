@@ -4,3 +4,5 @@ pretty_midi>=0.2.9
 matplotlib>=2.2.4
 numpy>=1.19.2
 h5py
+mir_eval
+pydub
